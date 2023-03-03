@@ -35,6 +35,7 @@ public class BaseClass {
     }
 
     void click(WebElement element){
+        wait.until(ExpectedConditions.visibilityOf(element));
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
     }
@@ -43,6 +44,7 @@ public class BaseClass {
         return  driver.findElement(locator);
     }
     List<WebElement> findElements(By locator){
+
         return  driver.findElements(locator);
     }
 
@@ -61,15 +63,12 @@ public class BaseClass {
 
         try {
             reader = new BufferedReader(new FileReader("src/test/java/oemlist.txt"));
-
-            while (oem != null ) {
-                oem = reader.readLine();
-                oemler.add(oem);
-            }
+            oemler = reader.lines().toList();
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         return oemler;
     }
+
 }
