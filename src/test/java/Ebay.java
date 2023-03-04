@@ -1,6 +1,8 @@
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.devtools.v85.browser.Browser;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
@@ -14,7 +16,8 @@ import java.util.List;
 public class Ebay extends BaseClass implements Locators{
 
 
-    @Test
+
+      @Test
     public void FisrtTest() {
 
         List<String> oemler = getOem();
@@ -34,46 +37,49 @@ public class Ebay extends BaseClass implements Locators{
         String oOemlerTex="emty";
         String sellerLocation="emty";
 
-        driver.get(URL);
+        driver.get("https://www.ebay.co.uk/");
         List<WebElement> allPruduct;
         List<String> Link;
 
-        selectSoldItems();
-        selectCatogy();
-        selectCaunty();
+        selectDemoItems();
+        selectBigMenu();
+          try {
+              selectCauntry1();
+
+          } catch (Exception e) {
+              actions.click(findElement(lSelectCaunty2)); //yeri başka ise ikinci caunty
+              click(findElement(lselectCauntyMenu));
+              Select select=new Select(findElement(lselect));
+              select.selectByValue("3");
+              click(findElement(getlGOButton2));
+          }
         selectNearFirstList();
-        yeniUrunleriSec();
         selectItemLocations();
+        selectCategory(lselectCategory,"9800");
 
         for (int i = 0; i < oemler.size(); i++) {
             findElement(lSeachBox).clear();
             OEM=oemler.get(i);
             findElement(lSeachBox).sendKeys(OEM, Keys.ENTER);
 
-            //yeniUrunleriSec();
 
             allPruduct=findElements(lproducs);
 
-            boolean oemdenListeVarmi=false;
-            try {
-                findElement(lNoExactMatchesMound).isDisplayed();
-            }catch (Exception e){
-                oemdenListeVarmi=true;
-            }
+            boolean oemdenListeVarmi = isOemdenListeVarmi();
 
             if (oemdenListeVarmi) { //oem bulunduysa
 
 
                 for (int j = 0; j < allPruduct.size(); j++) {
 
-                    if (j==2) {  // TODO: 1.03.2023 listeden ilk kaç ürünün analizi yapılacak
+                    if (j==5) {  // TODO: 1.03.2023 listeden ilk kaç ürünün analizi yapılacak
                         break;
                     }
 
                     List<String> windows;
 
                     try {
-                        actions(allPruduct.get(j));
+                        actions.moveToElement(allPruduct.get(j)).build().perform();
                         wait.until(ExpectedConditions.visibilityOf(allPruduct.get(j).findElement(urunTitle)));
                         title = allPruduct.get(j).findElement(urunTitle).getText();
                         wait.until(ExpectedConditions.visibilityOf(allPruduct.get(j).findElement(urunSaticiAdi)));
@@ -84,9 +90,6 @@ public class Ebay extends BaseClass implements Locators{
                         sonSatis = allPruduct.get(j).findElement(urunSonSatis).getText();
                         wait.until(ExpectedConditions.visibilityOf(allPruduct.get(j).findElement(urunfoto)));
                         fotoUrl = allPruduct.get(j).findElement(urunfoto).getAttribute("href");
-
-                        //ilk ürüne clicK
-                        wait.until(ExpectedConditions.visibilityOf(allPruduct.get(j).findElement(urunTitle)));
 
                     }catch (Exception e){
                         continue;
@@ -100,19 +103,13 @@ public class Ebay extends BaseClass implements Locators{
                         driver.switchTo().window(windows.get(1));
                     }catch (Exception e){
                         actions.moveToElement(allPruduct.get(j).findElement(urunTitle))
-                                .click(allPruduct.get(j).findElement(urunTitle)).build().perform();
+                                .click().build().perform();
                         windows= new ArrayList<>(driver.getWindowHandles());
                         wait.until(ExpectedConditions.numberOfWindowsToBe(2));
                         driver.switchTo().window(windows.get(1));
                     }
 
-                    boolean urunEndMi=false;
-
-                    try {
-                        findElement(lEndProduct).isDisplayed();
-                    } catch (Exception e) {
-                        urunEndMi=true;
-                    }
+                    boolean urunEndMi = isUrunEndMi(lEndProduct);
 
                     if (! urunEndMi) {
                         avaleble="emty";
@@ -131,8 +128,7 @@ public class Ebay extends BaseClass implements Locators{
                         }
 
 
-                    }
-                    else {
+                    }else {
                         try {
                             avaleble = findElement(lAvalible).getText();
                         }catch (Exception e){
@@ -174,8 +170,8 @@ public class Ebay extends BaseClass implements Locators{
                         driver.switchTo().window(windows.get(0));
 
                     }
-                    finishList.add(OEM+","+title+","+saticiAdi+","+fiyat+","+sonSatis+","+fotoUrl+","+avaleble+","+sold+","+postage+","+itemNumber+","+oOemlerTex+","+sellerLocation);
-                    //System.out.println(OEM+","+title+","+saticiAdi+","+fiyat+","+sonSatis+","+fotoUrl+","+avaleble+","+sold+","+postage+","+itemNumber+","+oOemlerTex+","+sellerLocation);
+                    finishList.add(OEM+"*"+title+"*"+saticiAdi+"*"+fiyat+"*"+sonSatis+"*"+fotoUrl+"*"+avaleble+"*"+sold+"*"+postage+"*"+itemNumber+"*"+oOemlerTex+"*"+sellerLocation);
+
                 }
 
             }else {    //oem yoksa
@@ -193,90 +189,103 @@ public class Ebay extends BaseClass implements Locators{
                 sellerLocation=oemBulunamadi;
 
 
-                finishList.add(OEM+","+title+","+saticiAdi+","+fiyat+","+sonSatis+","+fotoUrl+","+avaleble+","+sold+","+postage+","+itemNumber+","+oOemlerTex+","+sellerLocation);
+              finishList.add(OEM+"*"+title+"*"+saticiAdi+"*"+fiyat+"*"+sonSatis+"*"+fotoUrl+"*"+avaleble+"*"+sold+"*"+postage+"*"+itemNumber+"*"+oOemlerTex+"*"+sellerLocation);
 
                 // TODO: 1.03.2023 burası güncel olmalı
-                //System.out.println(OEM+","+title+","+saticiAdi+","+fiyat+","+sonSatis+","+fotoUrl+","+avaleble+","+sold+","+postage+","+itemNumber+","+oOemlerTex+","+sellerLocation); // TODO: 1.03.2023 prpnt güncelle
+                //System.out.println(OEM+""+title+","+saticiAdi+","+fiyat+","+sonSatis+","+fotoUrl+","+avaleble+","+sold+","+postage+","+itemNumber+","+oOemlerTex+","+sellerLocation); // TODO: 1.03.2023 prpnt güncelle
             }
 
         }
 
 
         verileriYaz(finishList);
+        driver.close();
 
     }
 
-    private void verileriYaz(List<String> list){
+    private boolean isUrunEndMi(By lEndProduct) {
+        boolean urunEndMi=false;
 
+        try {
+            findElement(lEndProduct).isDisplayed();
+        } catch (Exception e) {
+            urunEndMi=true;
+        }
+        return urunEndMi;
+    }
+
+    private boolean isOemdenListeVarmi() {
+        boolean oemdenListeVarmi=false;
+        try {
+            findElement(lNoExactMatchesMound).isDisplayed();
+        }catch (Exception e){
+            oemdenListeVarmi=true;
+        }
+        return oemdenListeVarmi;
+    }
+
+    void selectCategory(By locator, String value) {
+        select=new Select(findElement(locator));
+        select.selectByValue(value);
+    }
+    void verileriYaz(List<String> products){
 
         try {
             FileWriter fw = new FileWriter("src/test/java/arraylist.txt");
             BufferedWriter bw = new BufferedWriter(fw);
-
-            for (String str : list) {
-                bw.write(str);
+            for (String product : products) {
+                bw.write(product);
                 bw.newLine();
             }
-
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void selectCatogy() {
-        click(findElement(lCategori)); //kategori seçimi
-    }
 
-    private void selectSoldItems() {
+    void selectDemoItems() {
         findElement(lSeachBox).sendKeys("1432205", Keys.ENTER);
-        if (! findElement(lSoldItemClick).isSelected()) {
-            actions.scrollToElement(findElement(lSoldItemClick)).build().perform();
-            findElement(lSoldItemClick).click();
-        }
+
     }
 
-    private void selectItemLocations() {
+    void selectItemLocations() {
         click(lItemLocation); // ıtem location click-1 // TODO: 3.03.2023
         click(lUkOnly); // ıtem location click-1
     }
 
-    private void selectNearFirstList() {
+    void selectNearFirstList() {
         click(findElement(lSortButton));
         click(findElement(lNearrestFirs));
     }
 
-    private void selectCaunty() {
-        try {
-            click(findElement(lSelectCaunty)); // caunty seç
-            click(findElement(element));
-            Select select=new Select(findElement(lSelectCauntyMenu));
-            select.selectByValue("3");
-            click(findElement(lGOButton));
-        } catch (Exception e) {
-            click(findElement(lSelectCaunty2)); //yeri başka ise ikinci caunty
-            click(findElement(lselectCauntyMenu));
-            Select select=new Select(findElement(lselect));
-            select.selectByValue("3");
-            click(findElement(getlGOButton2));
-        }
+    private void selectBigMenu() {
+        clickByAction(lBigFilter1);
+        clickByAction(lBigFilter2);
+        clickByAction(lBigFilter3);
+        clickByAction(lBigFilter4);
+        clickByAction(lBigFilter5);
+        clickByAction(lBigFilter6);
+        clickByAction(lBigFilter7);
+        clickByAction(lBigFilter8);
+        clickByAction(lBigFilter9);
+        clickByAction(lBigFilter10);
+        clickByAction(lBigFilter11);
     }
-
-    private void yeniUrunleriSec() {
-        click(lComdition);  //condition click
-        click(lUnCheckAnyCondition);
-        try {
-            Thread.sleep(1_000);
-        } catch (Exception e) {
-            e.getMessage();
-        }
-        try {
-            click(lNewChecked); //new cilik
-        }catch (Exception e){
-
-        }
+    private void clickByAction(By locator){
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+        actions.moveToElement(findElement(locator)).click().build().perform();
 
     }
+    void selectCauntry1(){
+        driver.get("https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw=3m5q&_sacat=0&LH_TitleDesc=0&_fcid=204");
+        driver.findElement(By.xpath("//div[@id='mainContent']/div/div/div[2]/div[2]/div/button")).click();
+        driver.findElement(By.id("s0-51-12-5-4[0]-56-21-0-7-13-select")).click();
+        new Select(driver.findElement(By.id("s0-51-12-5-4[0]-56-21-0-7-13-select"))).selectByVisibleText("United Kingdom - GBR");
+        driver.findElement(By.xpath("//input[@value='Go']")).click();
+        driver.get("https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw=3m5q&_sacat=0&LH_TitleDesc=0&_fcid=3");
+    }
+
 
 }
 

@@ -1,10 +1,14 @@
+import Utils.Driver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.BufferedReader;
@@ -15,18 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseClass {
-    String URL="https://www.ebay.co.uk/";
+    String URL;
     WebDriver driver;
     WebDriverWait wait;
     Actions actions;
+    Select select;
 
     public BaseClass() {
-        WebDriverManager.chromedriver().setup();
-        driver=new ChromeDriver();
-        wait=new WebDriverWait(driver, Duration.ofMillis(10_000));
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1_000));
+
+        driver = Driver.getDriver();
+        wait=new WebDriverWait(driver, Duration.ofMillis(15_000));
         driver.manage().window().maximize();
         actions=new Actions(driver);
+        URL="https://www.ebay.co.uk/";
 
     }
 
@@ -35,7 +40,6 @@ public class BaseClass {
     }
 
     void click(WebElement element){
-        wait.until(ExpectedConditions.visibilityOf(element));
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
     }
