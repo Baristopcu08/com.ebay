@@ -10,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterSuite;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,22 +26,24 @@ public class BaseClass {
     Actions actions;
     Select select;
 
-    public BaseClass() {
+
+    public  BaseClass() {
 
         driver = Driver.getDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         wait=new WebDriverWait(driver, Duration.ofMillis(15_000));
-        driver.manage().window().maximize();
         actions=new Actions(driver);
         URL="https://www.ebay.co.uk/";
 
     }
 
     void click(By locator){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         click(driver.findElement(locator));
     }
 
     void click(WebElement element){
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+        wait.until(ExpectedConditions.visibilityOf(element));
         element.click();
     }
 

@@ -1,14 +1,19 @@
 
+import Utils.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.devtools.v85.browser.Browser;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 
 import java.io.*;
 import java.security.Key;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +22,8 @@ public class Ebay extends BaseClass implements Locators{
 
 
 
-      @Test
-    public void FisrtTest() {
+    @Test
+    public void FisrtTest() throws InterruptedException {
 
         List<String> oemler = getOem();
         List<String> finishList=new ArrayList<>();
@@ -38,21 +43,20 @@ public class Ebay extends BaseClass implements Locators{
         String sellerLocation="emty";
 
         driver.get("https://www.ebay.co.uk/");
+
         List<WebElement> allPruduct;
-        List<String> Link;
-
         selectDemoItems();
-        selectBigMenu();
-          try {
-              selectCauntry1();
 
-          } catch (Exception e) {
-              actions.click(findElement(lSelectCaunty2)); //yeri başka ise ikinci caunty
-              click(findElement(lselectCauntyMenu));
-              Select select=new Select(findElement(lselect));
-              select.selectByValue("3");
-              click(findElement(getlGOButton2));
-          }
+//        By lBanner=By.xpath("//div[@id='gdpr-banner']");
+//        By lBunnerdeclineButton=By.xpath("//button[@id='gdpr-banner-decline']");
+//
+//        if (findElement(lBanner).isDisplayed()) {
+//                click(lBunnerdeclineButton);
+//        }
+
+        selectBigMenu();
+        selectCauntry();
+
         selectNearFirstList();
         selectItemLocations();
         selectCategory(lselectCategory,"9800");
@@ -99,13 +103,11 @@ public class Ebay extends BaseClass implements Locators{
                     try {
                         click(allPruduct.get(j).findElement(urunTitle));
                         windows = new ArrayList<>(driver.getWindowHandles());
-                        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
                         driver.switchTo().window(windows.get(1));
                     }catch (Exception e){
                         actions.moveToElement(allPruduct.get(j).findElement(urunTitle))
                                 .click().build().perform();
                         windows= new ArrayList<>(driver.getWindowHandles());
-                        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
                         driver.switchTo().window(windows.get(1));
                     }
 
@@ -132,7 +134,7 @@ public class Ebay extends BaseClass implements Locators{
                         try {
                             avaleble = findElement(lAvalible).getText();
                         }catch (Exception e){
-                            avaleble="Listenin avalinle bilgisi yok";
+                            avaleble="Listenin avalible bilgisi yok";
                         }
                         try {
                             sold = findElement(lsold).getText();
@@ -277,13 +279,18 @@ public class Ebay extends BaseClass implements Locators{
         actions.moveToElement(findElement(locator)).click().build().perform();
 
     }
-    void selectCauntry1(){
-        driver.get("https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw=3m5q&_sacat=0&LH_TitleDesc=0&_fcid=204");
-        driver.findElement(By.xpath("//div[@id='mainContent']/div/div/div[2]/div[2]/div/button")).click();
-        driver.findElement(By.id("s0-51-12-5-4[0]-56-21-0-7-13-select")).click();
-        new Select(driver.findElement(By.id("s0-51-12-5-4[0]-56-21-0-7-13-select"))).selectByVisibleText("United Kingdom - GBR");
-        driver.findElement(By.xpath("//input[@value='Go']")).click();
-        driver.get("https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw=3m5q&_sacat=0&LH_TitleDesc=0&_fcid=3");
+    void selectCauntry(){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.getMessage();
+        }
+        click(lpostage_to);
+        click(lselect);
+        new Select(driver.findElement(lSelectCauntry)).selectByVisibleText("United Kingdom - GBR");
+        click(lGoButton);
+
+
     }
 
 

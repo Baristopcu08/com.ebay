@@ -7,22 +7,27 @@ public interface Locators {
     By lSelectCauntyMenu=By.xpath("//span[@class=\"select\"]/select");
     By element=By.xpath("//span[@class=\"select\"]/select");
 
-    By lSelectCaunty2=By.xpath("//div[@class=\"srp-controls__row-cells right\"]");
-    By lselectCauntyMenu=By.xpath("//div[@aria-label='Information']//span[@class='floating-label']");
+    //region Select Cauntry Locators
+    By lpostage_to=By.xpath("//span[text()='Postage to: ']");
+    By lselect=By.xpath("//span[@class='select']/select");
+    By lSelectCauntry=By.xpath("//span[@class='select']/select");
+    By lGoButton=By.xpath("//input[@value='Go']");
+    //endregion
 
-    By getlGOButton2=By.xpath("//form[@class='srp-shipping-location__form']//fieldset/input");
-    By lselect=By.xpath("//*[@id=\"s0-51-12-5-4[0]-47-21\"]/form/fieldset/div[1]/span//select");
 
-    By lGOButton=By.xpath("//*[@id=\"s0-51-12-5-4[0]-56-21\"]/form/fieldset/input");
-    By lSortButton=By.xpath("//*[@id=\"s0-51-12-5-4[0]\"]/div[3]");
-    By lNearrestFirs=By.xpath("//*[@id=\"s0-51-12-5-4[0]-40-1-content-menu\"]/li[1]");
-    By lCategori=By.xpath("//span[contains(.,'Vehicle Parts & Accessories')]");
-    By lComdition=By.xpath("//button[contains(.,'Condition')]");
-    By lUnCheckAnyCondition=By.xpath("(//span[contains(.,'Any condition')])[3]");
-    By lNewChecked=By.xpath("//div[@role='menuitemcheckbox']//span[contains(.,'New')]");
+    //region selectNearFirstList
+    By lSortButton=By.xpath("(//div[contains(@class,'srp-controls')])[8]//button");
+    By lNearrestFirs=By.xpath("//li/a/span[text()='Nearest first']");
+    //endregion
 
-    By lItemLocation=By.xpath("(//div[@class=\"srp-controls__resize-display\"]//span[contains(@class,\"filter-menu-button srp-\")])[2]//button");
-    By lUkOnly=By.xpath("(//div[@class=\"filter-menu-button__items\"])[3]//div[2]");
+
+
+    //region Locasyon lokators
+    By lItemLocation=By.xpath("//span[(text()='Item location')]"); // item locator sections
+    By lUkOnly=By.xpath("//span[contains(@class,'filter-menu-button')]//span[text()='UK Only']"); //uk only locator
+    //endregion
+
+
     By lselectCategory=By.xpath("//*[@id=\"gh-cat\"]");
 
 
@@ -43,17 +48,19 @@ public interface Locators {
     By lSellerLocation=By.xpath("(//div[@data-testid='ux-section'])[6]//div[6] | (//div[@data-testid='ux-section'])[6]//div[5]");
 
 
-    By lBigFilter1=By.xpath("//*[@id=\"s0-51-12-0-1-2-6\"]/li[2]/span/button");
-    By lBigFilter2=By.xpath("//div[@class='x-overlay-main-panel__aspects']//div[7]");
-    By lBigFilter3=By.xpath("//*[@id=\"c3-subPanel-LH_ItemCondition_New\"]/label");
-    By lBigFilter4=By.xpath("//div[@class='x-overlay-main-panel__aspects']//div[10]");
-    By lBigFilter5=By.xpath("//*[@id=\"c3-subPanel-_x-seller[0]\"]/label");
-    By lBigFilter6=By.xpath("//*[@id=\"c3-subPanel-_x-seller[0]-4[1]\"]/div/div/label");
-    By lBigFilter7=By.xpath("//*[@id=\"c3-subPanel-_x-seller[1]\"]/label");
-    By lBigFilter8=By.xpath("//*[@id=\"c3-subPanel-_x-seller[1]-4[0]\"]/div/div/label");
-    By lBigFilter9=By.xpath("//*[@id=\"c3-mainPanel-globals\"]");
-    By lBigFilter10=By.xpath("//*[@id=\"c3-subPanel-LH_Sold_Sold%20items\"]/label/div");
-    By lBigFilter11=By.xpath("//*[@id=\"c3-footerId\"]/div[2]/button");
+    By lBigFilter1=By.xpath("//button[text()='More filters...']"); //More filters Button
+    By lBigFilter2=By.xpath("//div[@role='tablist']//span[text()='Condition']"); //condition section
+    By lBigFilter3=By.xpath("(//div[@role='tabpanel']//.//div/label)[1]"); //new Checbox
+
+    By lBigFilter4=By.xpath("//div[@role='tablist']//span[text()='Seller']"); //Seller section
+    By lBigFilter5=By.xpath("//div[@role='tabpanel']//*[text()='Only show items from:']"); //Only show items from checbox
+    By lBigFilter6=By.xpath("//div[@role='tabpanel']//*[text()='Sellers with eBay Shops']"); //Sellers with eBay Shops checboxk
+    By lBigFilter7=By.xpath("//div[@role='tabpanel']//*[text()='Seller type:']"); //Seller type: checkboxx
+    By lBigFilter8=By.xpath("//div[@role='tabpanel']//*[text()='Business']"); //Busines checboxs
+
+    By lBigFilter9=(By.xpath("//div[@role='tablist']//span[text()='Show only']")); //Show only sections
+    By lBigFilter10=By.xpath("//div[@role='tabpanel']//*[text()='Sold items']"); //sold item checbox
+    By lBigFilter11=By.xpath("//button[text()='Apply']"); //apply button
 
 
 }
