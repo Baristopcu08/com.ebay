@@ -1,3 +1,5 @@
+package SearchOEM;
+
 import org.openqa.selenium.By;
 
 public interface Locators {
@@ -7,7 +9,7 @@ public interface Locators {
     By lSelectCauntyMenu=By.xpath("//span[@class=\"select\"]/select");
     By element=By.xpath("//span[@class=\"select\"]/select");
 
-    //region Select Cauntry Locators
+    //region Select Cauntry SearchOEM.Locators
     By lpostage_to=By.xpath("//span[text()='Postage to: ']");
     By lselect=By.xpath("//span[@class='select']/select");
     By lSelectCauntry=By.xpath("//span[@class='select']/select");

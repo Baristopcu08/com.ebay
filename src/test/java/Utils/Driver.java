@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.safari.SafariDriver;
 
 public class Driver {
@@ -25,7 +26,10 @@ public class Driver {
                     break;
                 case Frefox:
                     WebDriverManager.firefoxdriver().setup();
-                    driver=new FirefoxDriver();
+                    FirefoxOptions options2=new FirefoxOptions();
+                    //options2.addPreference("security.insecure_field_warning.contextual.enabled", false);
+                    //options2.addArguments("user-data-dir=C:\\Users\\user\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\v41p3oc0.default-release");
+                    driver=new FirefoxDriver(options2);
                     break;
                 case Safari:
                     WebDriverManager.safaridriver().setup();
@@ -44,7 +48,7 @@ public class Driver {
                    //options.addArguments("--disable-plugins-discovery");    //# eklenti keşfini engelle
                    //options.addArguments("--disable-save-password-bubble"); //# şifre kaydetme istemini kapat
                    //options.addArguments("--disable-translate");            //# çeviri özelliğini kapat
-                    //options.addArguments("--disable-web-security");         //# güvenlik önlemlerini kapat
+                   // options.addArguments("--disable-web-security");         //# güvenlik önlemlerini kapat
                     //options.addArguments("--ignore-certificate-errors");    //# sertifika hatalarını yoksay
                     //options.addArguments("user-data");
                     //options.addArguments("user-data-dir=" + System.getProperty("user.home") + "\\AppData\\Local\\Google\\Chrome\\User Data"); //login korumalı sayfada login olmak için

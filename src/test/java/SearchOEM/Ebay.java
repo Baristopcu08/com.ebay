@@ -1,29 +1,23 @@
+package SearchOEM;
 
-import Utils.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.devtools.v85.browser.Browser;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 
 import java.io.*;
-import java.security.Key;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Ebay extends BaseClass implements Locators{
+public class Ebay extends BaseClass implements Locators {
 
 
 
     @Test
-    public void FisrtTest() throws InterruptedException {
+    public void FisrtTest(){
 
         List<String> oemler = getOem();
         List<String> finishList=new ArrayList<>();
